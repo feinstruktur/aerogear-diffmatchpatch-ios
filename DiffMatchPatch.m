@@ -148,6 +148,28 @@ void splice(NSMutableArray *input, NSUInteger start, NSUInteger count, NSArray *
   return (self.text.hash ^ (NSUInteger)self.operation);
 }
 
+
+#pragma mark NSCoding
+
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super init];
+    if (self) {
+        self.operation = [coder decodeIntegerForKey:@"operation"];
+        self.text = [coder decodeObjectForKey:@"text"];
+    }
+    return self;
+}
+
+
+- (void)encodeWithCoder:(NSCoder *)coder
+{
+    [coder encodeInteger:self.operation forKey:@"operation"];
+    [coder encodeObject:self.text forKey:@"text"];
+}
+
+
 @end
 
 
@@ -232,6 +254,34 @@ void splice(NSMutableArray *input, NSUInteger start, NSUInteger count, NSArray *
 
   return text;
 }
+
+
+#pragma mark NSCoding
+
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super init];
+    if (self) {
+        self.diffs = [coder decodeObjectForKey:@"diffs"];
+        self.start1 = [coder decodeIntegerForKey:@"start1"];
+        self.start2 = [coder decodeIntegerForKey:@"start2"];
+        self.length1 = [coder decodeIntegerForKey:@"length1"];
+        self.length2 = [coder decodeIntegerForKey:@"length2"];
+    }
+    return self;
+}
+
+
+- (void)encodeWithCoder:(NSCoder *)coder
+{
+    [coder encodeObject:self.diffs forKey:@"diffs"];
+    [coder encodeInteger:self.start1 forKey:@"start1"];
+    [coder encodeInteger:self.start2 forKey:@"start2"];
+    [coder encodeInteger:self.length1 forKey:@"length1"];
+    [coder encodeInteger:self.length2 forKey:@"length2"];
+}
+
 
 @end
 

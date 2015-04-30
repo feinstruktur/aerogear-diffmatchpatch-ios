@@ -49,7 +49,7 @@ typedef NS_ENUM(NSInteger, Operation) {
 /*
  * Class representing one diff operation.
  */
-@interface Diff : NSObject <NSCopying>
+@interface Diff : NSObject <NSCopying, NSCoding>
 @property (nonatomic, assign) Operation operation; // One of: DIFF_INSERT, DIFF_DELETE or DIFF_EQUAL.
 @property (nonatomic, copy) NSString *text; // The text associated with this diff operation.
 
@@ -62,7 +62,7 @@ typedef NS_ENUM(NSInteger, Operation) {
 /*
  * Class representing one patch operation.
  */
-@interface Patch : NSObject <NSCopying>
+@interface Patch : NSObject <NSCopying, NSCoding>
 @property (nonatomic, retain) NSMutableArray<Diff *> *diffs;
 @property (nonatomic, assign) NSUInteger start1;
 @property (nonatomic, assign) NSUInteger start2;
