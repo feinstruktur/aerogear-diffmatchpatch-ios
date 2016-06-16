@@ -1254,6 +1254,43 @@
 
 }
 
+- (void)test_diff_nscoding {
+    Diff *orig = [Diff new];
+    orig.operation = OperationDiffEqual;
+    orig.text = @"foo";
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:orig];
+    XCTAssertNotNil(data);
+    Diff *res = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    XCTAssertNotNil(res);
+    XCTAssertEqual(res.operation, OperationDiffEqual);
+    XCTAssertEqualObjects(res.text, @"foo");
+}
+
+- (void)test_patch_nscoding {
+    Diff *diff = [Diff new];
+    diff.operation = OperationDiffEqual;
+    diff.text = @"foo";
+
+    Patch *orig = [Patch new];
+    orig.diffs = [@[diff] mutableCopy];
+    orig.start1 = 1;
+    orig.start2 = 2;
+    orig.length1 = 3;
+    orig.length2 = 4;
+
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:orig];
+    XCTAssertNotNil(data);
+    Patch *res = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    XCTAssertNotNil(res);
+
+    XCTAssertEqual(res.diffs.count, 1ul);
+    XCTAssertEqual(res.diffs[0].operation, OperationDiffEqual);
+    XCTAssertEqualObjects(res.diffs[0].text, @"foo");
+    XCTAssertEqual(res.start1, 1ul);
+    XCTAssertEqual(res.start2, 2ul);
+    XCTAssertEqual(res.length1, 3ul);
+    XCTAssertEqual(res.length2, 4ul);
+}
 
 #pragma mark Test Utility Functions
 //  TEST UTILITY FUNCTIONS
